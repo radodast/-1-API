@@ -42,7 +42,6 @@ class Example(QWidget):
         self.image.setPixmap(self.pixmap)
 
     def closeEvent(self, event):
-        """При закрытии формы подчищаем за собой"""
         os.remove(self.map_file)
 
 
