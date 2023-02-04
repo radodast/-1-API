@@ -15,7 +15,8 @@ class Example(QWidget):
         self.initUI()
 
     def getImage(self):
-        map_request = "http://static-maps.yandex.ru/1.x/?ll=37.530887,55.703118&spn=0.002,0.002&l=map"
+        global cords, size
+        map_request = f"http://static-maps.yandex.ru/1.x/?ll={','.join(cords.split())}&spn={','.join(size.split())}&l=map"
         response = requests.get(map_request)
 
         if not response:
@@ -46,6 +47,8 @@ class Example(QWidget):
 
 
 if __name__ == '__main__':
+    cords = input("Ввод через пробел")
+    size = input("Ввод через пробел")
     app = QApplication(sys.argv)
     ex = Example()
     ex.show()
