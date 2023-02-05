@@ -8,6 +8,7 @@ from PyQt5.QtCore import Qt
 
 SCREEN_SIZE = [600, 450]
 
+
 class Example(QMainWindow):
     def __init__(self):
         super().__init__()
@@ -22,8 +23,6 @@ class Example(QMainWindow):
         self.setWindowTitle('Отображение карты')
 
         ## Изображение
-
-
 
     def getImage(self):
         map_request = f"http://static-maps.yandex.ru/1.x/?ll={','.join(self.cords)}&spn={','.join(self.size)}&l=map"
@@ -52,9 +51,24 @@ class Example(QMainWindow):
             if self.size[0] != '0.0078125':
                 self.size = [str(float(self.size[0]) / 2), str(float(self.size[0]) / 2)]
                 self.getImage()
+        if event.key() == Qt.Key_Up:
+            self.cords[1] = str(float(self.cords[1]) + 1.0)
+            self.getImage()
+        if event.key() == Qt.Key_Down:
+            self.cords[1] = str(float(self.cords[1]) - 1.0)
+            self.getImage()
+        if event.key() == Qt.Key_Right:
+            self.cords[0] = str(float(self.cords[0]) + 1.0)
+            self.getImage()
+        if event.key() == Qt.Key_Left:
+            self.cords[0] = str(float(self.cords[0]) - 1.0)
+            self.getImage()
+
+
 
 def exept_hook(cls, exeption, traceback):
     sys.__excepthook__(cls, exeption, traceback)
+
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
