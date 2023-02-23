@@ -5,13 +5,15 @@ import requests
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QMainWindow
 from PyQt5.QtCore import Qt
+from PyQt5 import uic
 
-SCREEN_SIZE = [600, 450]
 
 
 class Example(QMainWindow):
     def __init__(self):
         super().__init__()
+        uic.loadUi('apelsin.ui', self)
+        self.l = 'skl'
         self.cords = ['55.755864', '37.617698']
         self.size = ['1', '1']
         self.map_file = "map.png"
@@ -19,13 +21,29 @@ class Example(QMainWindow):
         self.map.move(0, 0)
         self.map.resize(600, 450)
         self.getImage()
-        self.setGeometry(100, 100, *SCREEN_SIZE)
         self.setWindowTitle('Отображение карты')
+        self.mapB.clicked.connect(self.refl)
+        self.sat.clicked.connect(self.refl)
+        self.skl.clicked.connect(self.refl)
+
+
+
+    def refl(self):
+        l = self.sender().text()
+        if l == 'схема':
+            self.l = 'skl'
+            self.getImage()
+        if l == 'спутник':
+            self.l = 'sat'
+            self.getImage()
+        if l == 'гибрид':
+            self.l = 'map'
+            self.getImage()
 
         ## Изображение
 
     def getImage(self):
-        map_request = f"http://static-maps.yandex.ru/1.x/?ll={','.join(self.cords)}&spn={','.join(self.size)}&l=map"
+        map_request = f"http://static-maps.yandex.ru/1.x/?ll={','.join(self.cords)}&spn={','.join(self.size)}&l={self.l}"
         response = requests.get(map_request)
 
         if not response:
